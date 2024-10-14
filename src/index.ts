@@ -100,10 +100,32 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const focus = (el: HTMLElement, rte?: CKE.editor) => {
     if (rte?.focusManager?.hasFocus) return;
     el.contentEditable = 'true';
+
+    let mjElement = findType(el);
+    if (rte && mjElement == 'mj-button') {
+      rte.config.removePlugins = "scayt,exportpdf,link";
+    } else if (rte && mjElement !== 'mj-button') {
+      rte.config.removePlugins = "scayt,exportpdf";
+    }
+
     rte?.focus();
     updateEditorToolbars();
+
+    console.log(rte?.config.removePlugins);
   };
 
+  function findType(el: HTMLElement): string {
+    // Comprobamos si el elemento actual tiene la propiedad .parent y si tiene una propiedad .type igual a 'my_type'
+    if (el.dataset.gjsType) {
+      return el.dataset.gjsType;
+    }
+    // Devolvemos el elemento si encontramos el tipo deseado
+    if (el.parentElement) {
+      return findType(el.parentElement);
+    } else {
+      return '';
+    }
+  }
 
   editor.setCustomRte({
     getContent(el, rte: CKE.editor) {
@@ -156,7 +178,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
         editable.attachListener(editable, 'click', () => el.click());
       });
 
-      // The toolbar is not immediatly loaded so will be wrong positioned.
+      // The toolbar is not immediately loaded so will be wrong positioned.
       // With this trick we trigger an event which updates the toolbar position
       rte.on('instanceReady', () => {
         const toolbar = rteToolbar.querySelector<HTMLElement>(`#cke_${rte!.name}`);
