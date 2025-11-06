@@ -102,7 +102,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     el.contentEditable = 'true';
 
     let mjElement = findType(el);
-    if (rte && mjElement == 'mj-button') {
+    if (rte && (mjElement == 'mj-button' || mjElement == 'mj-navbar-link')) {
       rte.config.removePlugins = "scayt,exportpdf,link";
     } else if (rte && mjElement !== 'mj-button') {
       rte.config.removePlugins = "scayt,exportpdf";
