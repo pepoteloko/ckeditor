@@ -102,16 +102,16 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     el.contentEditable = 'true';
 
     let mjElement = findType(el);
-    if (rte && (mjElement == 'mj-button' || mjElement == 'mj-navbar-link')) {
+    if (rte && mjElement == 'mj-button') {
       rte.config.removePlugins = "scayt,exportpdf,link";
+    } else if (rte && mjElement == 'mj-navbar-link') {
+        rte.config.removePlugins = "scayt,exportpdf,link,colorbutton,placeholder_select,emoji";
     } else if (rte && mjElement !== 'mj-button') {
       rte.config.removePlugins = "scayt,exportpdf";
     }
 
     rte?.focus();
     updateEditorToolbars();
-
-    console.log(rte?.config.removePlugins);
   };
 
   function findType(el: HTMLElement): string {
