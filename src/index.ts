@@ -105,7 +105,9 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     if (rte && mjElement == 'mj-button') {
       rte.config.removePlugins = "scayt,exportpdf,link";
     } else if (rte && mjElement == 'mj-navbar-link') {
-        rte.config.removePlugins = "scayt,exportpdf,link,colorbutton,emoji";
+        // Emoji rompe el enlace al añadir un emoticono
+        // Link crea un enlace dentro de un enlace
+        rte.config.removePlugins = "scayt,exportpdf,link,emoji";
     } else if (rte && mjElement !== 'mj-button') {
       rte.config.removePlugins = "scayt,exportpdf";
     }
